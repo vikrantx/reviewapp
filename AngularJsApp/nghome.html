@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.0.3.js"></script>
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <script src="Service/appchart.js"></script>
+    <link href="Style/tablestyle.css" rel="stylesheet" />
+    <link href="Style/main.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="main" ng-app="myApp" ng-controller="myController">
+        <header>
+           
+        </header>
+        <div class="container">
+            <div class="row panelrow">
+                <div class="col-md-2 panel" style="margin:25px;"></div>
+                <div class="col-md-2 panel sidepanel">
+
+                    <div class="btn-group" aria-label="...">
+
+                        <div class="btn-group btn-blue" role="group">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownProjectMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select Project
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownProjectMenu">
+                                <li ng-repeat="p in Projects">
+                                    <a ng-click="ItemSelected(p.Name)">{{p.Name}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-default" ng-click="open('','myModalContent.html','ModalInstanceCtrl')"><strong>+</strong></button>
+
+                    </div>
+
+                     
+
+                    <!--Scope Types-->
+                    <br />
+                    <br />
+
+                    <div class="tableholder">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Project Scopes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="x in appscope | filter:{PId:CurrentProjectIndex}" id="x{{x.Id}}" ng-click="ScopeSelect(x.Name)">
+                                    <td>
+                                        <input type="checkbox" id="chk{{x.Id}}" ng-model="filreview[$index]" ng-init="filreview[$index]=true;"/>
+                                        {{x.Name}} 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="text-right btn-link" ng-click="open('lg','addScopeModal.html','ModalInstanceCtrl')"><strong>+ Add new</strong> </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--ReviewTypes-->
+                    <br />
+
+
+                    <div class="tableholder">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Project Reviews</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="text-right btn-link" ng-click="open('lg','addReview.html')"><strong>+ Add new</strong> </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" id="" /> Technical Design
+                                        <span class="graphbullet graphbullet-Td">&nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" id="" /> Unit Test
+                                        <span class="graphbullet graphbullet-Ut">&nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" id="" /> Code Review
+                                        <span class="graphbullet graphbullet-Cr">&nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" id="" /> Peer Test
+                                        <span class="graphbullet graphbullet-Pt">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div class="col-md-9 panel">
+
+                        <h2 class="prjtitle shadow-box">{{CurrentProject}}</h2>
+
+                     <hr />
+                    <br/>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Date</th>
+                                <th>ProjectName</th>
+                                <th>Scope</th>
+                                <th>AssingedTo</th>
+                                <th>ReviewedBy</th>
+                                <th>Severity</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="r in Reviews | filter:{ProjectName:SelectedProject} | filter: filterScope(r)" class="{{r.Severity.trim() == 'Low'?'alert alert-info' : (r.Severity.trim() == 'Medium'?'alert alert-warning' : 'alert alert-danger')}}">
+                                <!--<tr ng-repeat="r in Reviews">-->
+                                <td><a ng-click="popupReview(r.Id)"> {{r.Id}}</a></td>
+                                <td>{{r.ReviewDate}}</td>
+                                <td>{{r.ProjectName}}</td>
+                                <td>{{r.Scope}}</td>
+                                <td>{{r.AssignedTo}}</td>
+                                <td>{{r.ReviewedBy}}</td>
+                                <td>{{r.Severity}}</td>
+                                <td>{{r.Category}}</td>
+                                <td>{{r.Status}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="graph-container">
+                       
+                        <canvas id="canvas" height="312" width="400" style="height:312px !important; width:400px !important;"></canvas>
+                    </div>
+
+                </div>
+
+                <!--Bootstrap Modal popup-->
+                <script type="text/ng-template" id="myModalContent.html">
+                    <div class="modal-header">
+                        <h3 class="modal-title">I'm a modal!</h3>
+                    </div>
+                    <div class="modal-body">
+                        <ul>
+                            <li ng-repeat="item in items">
+                                <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
+                            </li>
+                        </ul>
+                        Selected: <b>{{ selected.item }}</b>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+                        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                    </div>
+          
+                </script>
+
+
+                <script type="text/ng-template" id="addReview.html">
+
+                    <div class="modal-header">
+                        <h3 class="modal-title">Add Review</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <span class="control-label col-sm-2">Project :</span>
+                                <div class="col-md-10">
+                                   
+                                    <label class="control-label">{{CurrentProject}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-2">Scope :</span>
+                                <div class="col-md-10">
+                                    <select >
+                                            <option value="fv">Select Scope</option>
+                                            <option ng-repeat="s in appscope" value="s.Id">{{s.Name}}</option>                                        
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-2">Review Type :</span>
+                                <div class="col-md-10">
+                                  
+                                    <div class="btn-group" aria-label="...">
+                                        <select>
+                                            <option value="0">Select Review Option</option>
+                                            <option value="1">Code</option>
+                                            <option value="2">Unite Test</option>
+                                            <option value="3">Code Review</option>
+                                            <option value="4">Peer Test</option>
+                                        </select>
+
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-2">Document :</span>
+                                <div class="col-md-5">
+                                    <input class="form-control col-sm-5" id="txtscope" name="txtdoc" />
+                                </div>
+                                <div class="col-md-4">
+                                    <input class="form-control col-sm-4" id="txtscope" name="txtdoc" placeholder="Version"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-2">Assigned To :</span>
+                                <div class="col-md-10">
+                                    <input class="form-control col-sm-8" id="txtscope" name="txtscope" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-2">Reviewed By :</span>
+                                <div class="col-md-10">
+                                    <input class="form-control col-sm-8" id="txtscope" name="txtscope" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-2">Reviewer Comment :</span>
+                                <div class="col-md-10">
+                                    <input class="form-control col-sm-8" id="txtscope" name="txtscope" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-2">Owner Response :</span>
+                                <div class="col-md-10">
+                                    <input class="form-control col-sm-8" id="txtscope" name="txtscope" />
+                                </div>
+                            </div>
+
+                             <div class="form-group">
+                                <span class="control-label col-sm-2">Review Status:</span>
+                                <div class="col-md-3">
+                                  <select>
+                                      <option>Severity</option>
+                                      <option>Low</option>
+                                      <option>Medium</option>
+                                      <option>High</option>
+                                      
+                                  </select>
+                                </div>
+                                 <div class="col-md-3">
+                                     <select>
+                                         <option>Category</option>
+                                         <option>Suggestion</option>
+                                         <option>Clarification</option>
+                                         <option>Improvement</option>
+
+                                     </select>
+                                 </div>
+                                 <div class="col-md-3">
+                                     <select>
+                                         <option>Status</option>
+                                         <option>Open</option>
+                                         <option>Close</option>
+                                         <option>Rejected</option>
+                                         <option>On Hold</option>
+                                     </select>
+                                 </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+                        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                    </div>
+                </script>
+
+
+                <script type="text/ng-template" id="viewReview.html">
+
+                    <div class="modal-header">
+                        <h3 class="modal-title">View Title</h3>
+                        <div></div>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <span class="control-label col-sm-2">Project :</span>
+                                <div class="col-md-10">
+                                    <span class="control-label col-sm-2">{{Review.Scope}}</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-2">Scope :</span>
+                                <div class="col-md-10">
+                                    <input class="form-control col-sm-8" id="txtscope" name="txtscope" />
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+                        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                    </div>
+                </script>
+
+
+            </div>
+
+        </div>
+       
+    </div>
+
+
+    <script src="AppStart/app.js"></script>
+    <script src="Controller/mycontroller.js"></script>
+    <script src="Controller/modalinstancectrl.js"></script>
+    <script src="Service/ReviewService.js"></script>
+    <script src="Service/ProjectService.js"></script>
+    <script src="Service/ScopeService.js"></script>
+</body>
+</html>

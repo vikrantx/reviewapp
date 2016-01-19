@@ -1,0 +1,81 @@
+﻿.container {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  min-height: 660px;
+}
+
+
+.sidepanel {
+    border:1px solid #0066FF !important;
+     padding-top:15px;
+     margin-left:10px;
+     position:fixed;
+     z-index:33;
+}
+     .table {
+    margin:0px;
+    }
+.panelrow {
+    margin-top:15px;
+   
+}
+
+.tableholder{
+height:270px;
+overflow-y: auto;
+border-radius:4px;
+}
+.btn-link {
+    cursor:pointer;
+   
+}
+    .btn-link a {
+     text-decoration:none;
+    }
+
+.prjtitle {
+    text-shadow: 0 0 3px #CCC, 0 0 3px #4d88ff;
+    color:#002a80;
+        position: fixed;
+    background-color: #FFF;
+    width: 66% ;
+    top: -20px;
+    height: 60px;
+    padding-top: 20px;
+    webkit-box-shadow:  6px 13px 6px -10px #CCD;
+       -moz-box-shadow: 6px 13px 6px -10px #CCD;
+           box-shadow: -6px 13px 6px -10px #CCD;
+    z-index:999;
+}
+
+.graph-container {
+    margin-top:15px;
+    width:50%;
+}
+
+.graphbullet{
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    border-radius: 2px;
+    float: right;
+    margin-top: 5px;
+}
+
+.graphbullet-Td {
+    background-color: #ffb3b3;
+}
+.graphbullet-Ut {
+    background-color: #33ffad;
+}
+.graphbullet-Cr {
+    background-color: #66a3ff;
+}
+.graphbullet-Pt {
+    background-color: #b3b3ff;
+}
+
+
+select {
+padding:5px;
+border-radius:5px;
+}

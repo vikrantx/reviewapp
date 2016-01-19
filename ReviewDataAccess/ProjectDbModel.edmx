@@ -1,0 +1,757 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ProjectDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Technology" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Scope" Type="int" Nullable="false" />
+          <Property Name="ReviewDate" Type="datetime" Nullable="false" />
+          <Property Name="ReviewTypeId" Type="int" Nullable="false" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="150" />
+          <Property Name="FileVersion" Type="nchar" MaxLength="20" />
+          <Property Name="AssignedTo" Type="int" Nullable="false" />
+          <Property Name="ReviewedBy" Type="int" Nullable="false" />
+          <Property Name="ReviewerComment" Type="nvarchar(max)" />
+          <Property Name="OwnerResponse" Type="nvarchar(max)" />
+          <Property Name="SeverityId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReviewType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReviewName" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Scope">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Project" Type="int" Nullable="false" />
+          <Property Name="Creator" Type="int" Nullable="false" />
+          <Property Name="CreatedDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Severity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="DesignationId" Type="int" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserDesignation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Designation" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="UserProject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <Association Name="FK_Review_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_ReviewType">
+          <End Role="ReviewType" Type="Self.ReviewType" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReviewType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="ReviewTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Scope">
+          <End Role="Scope" Type="Self.Scope" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scope">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="Scope" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Severity">
+          <End Role="Severity" Type="Self.Severity" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Severity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="SeverityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="AssignedTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_User1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="ReviewedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scope_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Scope" Type="Self.Scope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scope">
+              <PropertyRef Name="Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scope_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Scope" Type="Self.Scope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scope">
+              <PropertyRef Name="Creator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_UserDesignation">
+          <End Role="UserDesignation" Type="Self.UserDesignation" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDesignation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="DesignationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProject_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="UserProject" Type="Self.UserProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProject">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProject_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserProject" Type="Self.UserProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProject">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProjectDbModelStoreContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Review" EntityType="Self.Review" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReviewType" EntityType="Self.ReviewType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Scope" EntityType="Self.Scope" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Severity" EntityType="Self.Severity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserDesignation" EntityType="Self.UserDesignation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProject" EntityType="Self.UserProject" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Review_Category" Association="Self.FK_Review_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_ReviewType" Association="Self.FK_Review_ReviewType">
+            <End Role="ReviewType" EntitySet="ReviewType" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Scope" Association="Self.FK_Review_Scope">
+            <End Role="Scope" EntitySet="Scope" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Severity" Association="Self.FK_Review_Severity">
+            <End Role="Severity" EntitySet="Severity" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Status" Association="Self.FK_Review_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_User" Association="Self.FK_Review_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_User1" Association="Self.FK_Review_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scope_Project" Association="Self.FK_Scope_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Scope" EntitySet="Scope" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scope_User" Association="Self.FK_Scope_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Scope" EntitySet="Scope" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_UserDesignation" Association="Self.FK_User_UserDesignation">
+            <End Role="UserDesignation" EntitySet="UserDesignation" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProject_Project" Association="Self.FK_UserProject_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="UserProject" EntitySet="UserProject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProject_User" Association="Self.FK_UserProject_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserProject" EntitySet="UserProject" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProjectDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Review_Category" FromRole="Category" ToRole="Review" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Technology" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Scopes" Relationship="Self.FK_Scope_Project" FromRole="Project" ToRole="Scope" />
+          <NavigationProperty Name="UserProjects" Relationship="Self.FK_UserProject_Project" FromRole="Project" ToRole="UserProject" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Scope" Type="Int32" Nullable="false" />
+          <Property Name="ReviewDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReviewTypeId" Type="Int32" Nullable="false" />
+          <Property Name="FileName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="FileVersion" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="AssignedTo" Type="Int32" Nullable="false" />
+          <Property Name="ReviewedBy" Type="Int32" Nullable="false" />
+          <Property Name="ReviewerComment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OwnerResponse" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SeverityId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Review_Category" FromRole="Review" ToRole="Category" />
+          <NavigationProperty Name="ReviewType" Relationship="Self.FK_Review_ReviewType" FromRole="Review" ToRole="ReviewType" />
+          <NavigationProperty Name="Scope1" Relationship="Self.FK_Review_Scope" FromRole="Review" ToRole="Scope" />
+          <NavigationProperty Name="Severity" Relationship="Self.FK_Review_Severity" FromRole="Review" ToRole="Severity" />
+          <NavigationProperty Name="Status" Relationship="Self.FK_Review_Status" FromRole="Review" ToRole="Status" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Review_User" FromRole="Review" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_Review_User1" FromRole="Review" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ReviewType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReviewName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Review_ReviewType" FromRole="ReviewType" ToRole="Review" />
+        </EntityType>
+        <EntityType Name="Scope">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Project" Type="Int32" Nullable="false" />
+          <Property Name="Creator" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Project1" Relationship="Self.FK_Scope_Project" FromRole="Scope" ToRole="Project" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Review_Scope" FromRole="Scope" ToRole="Review" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Scope_User" FromRole="Scope" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Severity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Review_Severity" FromRole="Severity" ToRole="Review" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Review_Status" FromRole="Status" ToRole="Review" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DesignationId" Type="Int32" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Review_User" FromRole="User" ToRole="Review" />
+          <NavigationProperty Name="Reviews1" Relationship="Self.FK_Review_User1" FromRole="User" ToRole="Review" />
+          <NavigationProperty Name="Scopes" Relationship="Self.FK_Scope_User" FromRole="User" ToRole="Scope" />
+          <NavigationProperty Name="UserDesignation" Relationship="Self.FK_User_UserDesignation" FromRole="User" ToRole="UserDesignation" />
+          <NavigationProperty Name="UserProjects" Relationship="Self.FK_UserProject_User" FromRole="User" ToRole="UserProject" />
+        </EntityType>
+        <EntityType Name="UserDesignation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Designation" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_UserDesignation" FromRole="UserDesignation" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserProject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Project" Relationship="Self.FK_UserProject_Project" FromRole="UserProject" ToRole="Project" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserProject_User" FromRole="UserProject" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Review_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scope_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Scope" Type="Self.Scope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scope">
+              <PropertyRef Name="Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProject_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="UserProject" Type="Self.UserProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProject">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_ReviewType">
+          <End Role="ReviewType" Type="Self.ReviewType" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReviewType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="ReviewTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Scope">
+          <End Role="Scope" Type="Self.Scope" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scope">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="Scope" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Severity">
+          <End Role="Severity" Type="Self.Severity" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Severity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="SeverityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="AssignedTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_User1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="ReviewedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scope_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Scope" Type="Self.Scope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scope">
+              <PropertyRef Name="Creator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_UserDesignation">
+          <End Role="UserDesignation" Type="Self.UserDesignation" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDesignation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="DesignationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProject_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserProject" Type="Self.UserProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProject">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="Reviews" EntityType="Self.Review" />
+          <EntitySet Name="ReviewTypes" EntityType="Self.ReviewType" />
+          <EntitySet Name="Scopes" EntityType="Self.Scope" />
+          <EntitySet Name="Severities" EntityType="Self.Severity" />
+          <EntitySet Name="Status" EntityType="Self.Status" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="UserDesignations" EntityType="Self.UserDesignation" />
+          <EntitySet Name="UserProjects" EntityType="Self.UserProject" />
+          <AssociationSet Name="FK_Review_Category" Association="Self.FK_Review_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scope_Project" Association="Self.FK_Scope_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Scope" EntitySet="Scopes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProject_Project" Association="Self.FK_UserProject_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="UserProject" EntitySet="UserProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_ReviewType" Association="Self.FK_Review_ReviewType">
+            <End Role="ReviewType" EntitySet="ReviewTypes" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Scope" Association="Self.FK_Review_Scope">
+            <End Role="Scope" EntitySet="Scopes" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Severity" Association="Self.FK_Review_Severity">
+            <End Role="Severity" EntitySet="Severities" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Status" Association="Self.FK_Review_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_User" Association="Self.FK_Review_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_User1" Association="Self.FK_Review_User1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scope_User" Association="Self.FK_Scope_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Scope" EntitySet="Scopes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_UserDesignation" Association="Self.FK_User_UserDesignation">
+            <End Role="UserDesignation" EntitySet="UserDesignations" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProject_User" Association="Self.FK_UserProject_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserProject" EntitySet="UserProjects" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProjectDbModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="ProjectDbModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="ProjectDbModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Technology" ColumnName="Technology" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reviews">
+            <EntityTypeMapping TypeName="ProjectDbModel.Review">
+              <MappingFragment StoreEntitySet="Review">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Scope" ColumnName="Scope" />
+                <ScalarProperty Name="ReviewDate" ColumnName="ReviewDate" />
+                <ScalarProperty Name="ReviewTypeId" ColumnName="ReviewTypeId" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="FileVersion" ColumnName="FileVersion" />
+                <ScalarProperty Name="AssignedTo" ColumnName="AssignedTo" />
+                <ScalarProperty Name="ReviewedBy" ColumnName="ReviewedBy" />
+                <ScalarProperty Name="ReviewerComment" ColumnName="ReviewerComment" />
+                <ScalarProperty Name="OwnerResponse" ColumnName="OwnerResponse" />
+                <ScalarProperty Name="SeverityId" ColumnName="SeverityId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReviewTypes">
+            <EntityTypeMapping TypeName="ProjectDbModel.ReviewType">
+              <MappingFragment StoreEntitySet="ReviewType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ReviewName" ColumnName="ReviewName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Scopes">
+            <EntityTypeMapping TypeName="ProjectDbModel.Scope">
+              <MappingFragment StoreEntitySet="Scope">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Project" ColumnName="Project" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Severities">
+            <EntityTypeMapping TypeName="ProjectDbModel.Severity">
+              <MappingFragment StoreEntitySet="Severity">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="ProjectDbModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ProjectDbModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserDesignations">
+            <EntityTypeMapping TypeName="ProjectDbModel.UserDesignation">
+              <MappingFragment StoreEntitySet="UserDesignation">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProjects">
+            <EntityTypeMapping TypeName="ProjectDbModel.UserProject">
+              <MappingFragment StoreEntitySet="UserProject">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

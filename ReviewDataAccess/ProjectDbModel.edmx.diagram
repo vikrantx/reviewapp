@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="14c6c3a7d0d043ffa8d6bebdf9baf665" Name="Diagram1">
+        <EntityTypeShape EntityType="ProjectDbModel.Category" Width="1.5" PointX="6" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDbModel.Project" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDbModel.Review" Width="1.5" PointX="8.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDbModel.ReviewType" Width="1.5" PointX="6" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDbModel.Scope" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDbModel.Severity" Width="1.5" PointX="6" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDbModel.Status" Width="1.5" PointX="6" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDbModel.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDbModel.UserDesignation" Width="1.5" PointX="1.5" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDbModel.UserProject" Width="1.5" PointX="6" PointY="5.25" IsExpanded="true" />
+        <AssociationConnector Association="ProjectDbModel.FK_Review_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDbModel.FK_Scope_Project" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDbModel.FK_UserProject_Project" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDbModel.FK_Review_ReviewType" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDbModel.FK_Review_Scope" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDbModel.FK_Review_Severity" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDbModel.FK_Review_Status" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDbModel.FK_Review_User" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDbModel.FK_Review_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDbModel.FK_Scope_User" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDbModel.FK_User_UserDesignation" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDbModel.FK_UserProject_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
